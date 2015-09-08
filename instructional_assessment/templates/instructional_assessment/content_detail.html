@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="contenttitle">{{ content.title }}</h1>
+        </div>
+
+        <div class="container">
+            <div class="well well-lg">
+                {{ content.body }}
+                <br/><br/>
+                <strong><small>Source: <a href="{{ content.source }}">{{ content.source }}</a></small></strong>
+            </div>
+
+            {% if form_error %}
+
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Error</h3>
+                </div>
+                <div class="panel-body">
+                    <p>You must select true or false when answering a question.</p>
+                </div>
+            </div>
+
+            {% endif %}
+
+            {% for question in question_list %}
+
+            <div class="panel panel-{{ question.user_response_correct|yesno:"success,danger,warning" }} div_answer_">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Question</h3>
+                </div>
+
+                <div class="panel-body">
+                    {{ question.question_content }}
+
+                    {% if question.user_response %}
+
+                        <p>You have already answered this question and your answer was {{ question.user_response_correct|yesno:"correct,incorrect,unknown" }}. Your response was that this question is {{ question.user_response.result|yesno:"True,False,unknown" }}, and the correct answer is {{ question.answer|yesno:"True,False,unknown" }}.</p>
+
+                    {% else %}
+
+                    {% if request.user.is_authenticated %}
+
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{ result_form.as_p }}
+                        <input type="submit" value="Submit">
+                        <input id="id_question_{{ forloop.counter }}" name="question" type="hidden" value="{{ question.id }}">
+                        <input id="id_user_{{ forloop.counter }}" name="user" type="hidden" value="{{ request.user.id }}">
+                    </form>
+
+                    {% else %}
+
+                    <h4>You must be signed in to answer the question.</h4>
+
+                    {% endif %}
+                {% endif %}
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

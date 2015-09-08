@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="jumbotron">
+        <div class="container">
+            <h3>User Profile</h3>
+
+            <h4>{{ user|upper }}</h4>
+        </div>
+    </div>
+
+    <div class="container">
+        {% if user.result_set.all %}
+        <div class="row">
+            <h3>Questions you have answered:</h3>
+        </div>
+        {% else %}
+        <h3>You have not answered any questions yet.  Why not go answer a few <a href="/">here</a>?</h3>
+        {% endif %}
+
+        <div class="row">
+            {% for result in user.result_set.all %}
+
+
+
+            <div class="panel panel-{% if result.question.answer == result.result %}success{% else %}danger{% endif %} div_answer_">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ result.question.content.title }}</h3>
+                </div>
+
+                <div class="panel-body">
+                    <h5>{{ result.question.question_content }}</h5>
+
+
+                        <p>You said this was {{ result.result|yesno:"True,False,maybe" }} and the correct answer is {{ result.question.answer|yesno:"True,False,maybe" }}.</p>
+
+                    {% if result.question.answer == result.result %}
+                        <p>Your answer was correct!</p>
+                        {% else %}
+                        <p>Your answer was incorrect</p>
+                        {% endif %}
+<p><a class="btn btn-default" href="{{ result.question.content.get_absolute_url }}">Read full article again &raquo;</a></p>
+                </div>
+        </div>
+            {% endfor %}
+
+        </div>
+    </div>
+{% endblock %}

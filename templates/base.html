@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+
+    <title>{% block title %}Django Assesment App{% endblock %}</title><!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"><!-- Custom styles for this template -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/jumbotron.css" rel="stylesheet">
+</head>
+
+<body>
+    {% block extra-headtags %}{% endblock extra-headtags %}
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Django Assessment Application</a>
+            </div>
+
+            <div class="navbar-collapse collapse" id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li style="list-style: none">{% if request.user.is_authenticated %}</li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ request.user|upper }} <span class="caret"></span></a>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/accounts/logout/">Logout</a>
+                            </li>
+
+                            <li>
+                                <a href="/profile/{{ request.user.id }}/">Profile</a>
+                            </li>
+                        </ul>{% else %}
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage Account <span class="caret"></span></a>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/accounts/login/">Login</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li style="list-style: none">{% endif %}</li>
+                </ul>
+            </div><!--/.navbar-collapse -->
+        </div>
+    </nav>{% block content %} {% endblock content %}
+    <hr>
+
+    <div class="container">
+        <footer>
+            <p>&copy; Mexicoder 2015</p>
+        </footer>
+    </div><!-- /container -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> {% block extra-script-tags %}{% endblock extra-script-tags %}
+</body>
+</html>
